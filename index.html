@@ -64,8 +64,8 @@ button:disabled{opacity:.55;cursor:wait}
 <p class="small">Mẫu đơn dùng để in, kiểm tra lại thông tin cá nhân trước khi ký và gửi.</p>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.7/pizzip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.37.11/docxtemplater.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const dotted = "................................................";
@@ -91,8 +91,10 @@ $("form").addEventListener("submit", async (event) => {
     };
     const response = await fetch("./mau-don-HH.docx");
     if (!response.ok) throw new Error("Không tải được mẫu Word. Hãy tải lại trang hoặc thử sau.");
+    if (typeof window.PizZip !== "function") throw new Error("Chưa tải được thư viện PizZip. Hãy tải lại trang hoặc thử trình duyệt khác.");
+    if (typeof window.docxtemplater !== "function") throw new Error("Chưa tải được thư viện Docxtemplater. Hãy tải lại trang hoặc thử trình duyệt khác.");
     const buffer = await response.arrayBuffer();
-    const zip = new PizZip(buffer);
+    const zip = new window.PizZip(buffer);
     const doc = new window.docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
