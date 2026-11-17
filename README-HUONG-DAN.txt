@@ -1,24 +1,17 @@
-HƯỚNG DẪN ĐƯA WEBSITE LÊN GITHUB PAGES
+BỘ CẬP NHẬT WEBSITE TẠO ĐƠN HH LINH ĐÀM
 
-1. Tạo repository mới trên GitHub, đặt tên ví dụ: don-kien-nghi-hh
-2. Chọn Public, sau đó Create repository.
-3. Trong repository, chọn Add file > Upload files.
-4. Tải lên CẢ HAI tệp:
+1. Giải nén ZIP.
+2. Vào GitHub repository, mở thư mục gốc (root).
+3. Upload/ghi đè hai tệp:
    - index.html
    - mau-don-HH.docx
-5. Nhấn Commit changes.
-6. Vào Settings > Pages.
-7. Trong Build and deployment:
-   - Source: Deploy from a branch
-   - Branch: main
-   - Folder: /(root)
-   - Nhấn Save.
-8. Đợi GitHub Pages triển khai. Đường dẫn thường có dạng:
-   https://TEN-TAI-KHOAN.github.io/don-kien-nghi-hh/
+4. Commit changes và chờ GitHub Pages cập nhật.
+5. Mở trang web, nhấn Ctrl+F5 để tải bản mới.
 
-LƯU Ý:
-- Không đổi tên hai tệp nếu không sửa đường dẫn trong index.html.
-- Repository và website là công khai; chỉ đưa lên mẫu đơn trống, không đưa dữ liệu cá nhân của cư dân.
-- Dữ liệu người dùng điền được xử lý trong trình duyệt, không gửi về GitHub.
-- Website cần kết nối Internet để tải thư viện tạo Word từ CDN.
-- Nếu sửa mẫu đơn, hãy thay mau-don-HH.docx và giữ nguyên các trường {name}, {cccd}, {phone}, {apartment}, {floor}, {tower}, {date}.
+Tính năng:
+- Ngày lập đơn mặc định là ngày tại máy người truy cập; người dùng có thể sửa.
+- Ngày xuất hiện ở đầu đơn và phần chữ ký.
+- Họ tên được điền vào phần người làm đơn, chữ ký và cả 11 dòng NGƯỜI GỬI.
+- Số điện thoại được điền vào phần thông tin cá nhân và cả 11 dòng NGƯỜI GỬI.
+- Tài liệu phản biện Tháp B được ghép sau đơn, bắt đầu ở trang mới.
+- Dữ liệu nhập chỉ xử lý trên trình duyệt, không gửi về máy chủ.

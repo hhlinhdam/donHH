@@ -8,7 +8,7 @@
 :root{font-family:Arial,sans-serif;color:#202124;background:#f4f6f8}
 *{box-sizing:border-box}
 body{margin:0;padding:24px 14px}
-main{max-width:680px;margin:0 auto;background:#fff;padding:26px;border-radius:14px;box-shadow:0 4px 22px #00000012}
+main{max-width:720px;margin:0 auto;background:#fff;padding:26px;border-radius:14px;box-shadow:0 4px 22px #00000012}
 h1{font-size:23px;text-align:center;margin:0 0 8px;color:#9b1c1c}
 .sub{text-align:center;color:#5f6368;font-size:14px;line-height:1.5;margin:0 0 22px}
 label{display:block;font-weight:600;margin:14px 0 6px}
@@ -25,10 +25,13 @@ button:disabled{opacity:.55;cursor:wait}
 <body>
 <main>
 <h1>TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM</h1>
-<p class="sub">Điền thông tin để tải đơn Word đã điền sẵn.<br>In hai mặt trên một tờ A4, sau đó ký tên.</p>
+<p class="sub">Điền thông tin để tải đơn Word đã điền sẵn kèm tài liệu phản biện.<br>In đơn và tài liệu kèm theo; ký tên ở cuối đơn.</p>
 
 <form id="form">
-<label for="name">Họ và tên *</label>
+<label for="date">Ngày lập đơn *</label>
+<input id="date" type="date" required>
+
+<label for="name">Họ và tên người làm đơn *</label>
 <input id="name" required maxlength="120" autocomplete="name" placeholder="Nhập họ và tên">
 
 <label for="cccd">Số CCCD <span class="small">(không bắt buộc)</span></label>
@@ -51,17 +54,28 @@ button:disabled{opacity:.55;cursor:wait}
 <label for="tower">Tòa nhà *</label>
 <select id="tower" required>
 <option value="">-- Chọn tòa --</option>
-<option>HH1</option><option>HH2</option><option>HH3</option><option>HH4</option>
+<optgroup label="Cụm HH1">
+<option>HH1A</option><option>HH1B</option><option>HH1C</option>
+</optgroup>
+<optgroup label="Cụm HH2">
+<option>HH2A</option><option>HH2B</option><option>HH2C</option>
+</optgroup>
+<optgroup label="Cụm HH3">
+<option>HH3A</option><option>HH3B</option><option>HH3C</option>
+</optgroup>
+<optgroup label="Cụm HH4">
+<option>HH4A</option><option>HH4B</option><option>HH4C</option>
+</optgroup>
 </select>
 
-<button id="download" type="submit">TẢI ĐƠN WORD (.DOCX)</button>
+<button id="download" type="submit">TẢI ĐƠN WORD KÈM TÀI LIỆU (.DOCX)</button>
 <div id="status" class="status" role="status"></div>
 </form>
 
 <div class="note">
-<strong>Lưu ý về thông tin cá nhân:</strong> Số CCCD và số điện thoại là tùy chọn. Nếu không nhập, đơn sẽ để dòng chấm để người làm đơn tự viết sau khi in. Thông tin bạn nhập được xử lý ngay trên trình duyệt để tạo tệp Word, không được gửi về máy chủ hoặc lưu thành danh sách.
+<strong>Lưu ý về thông tin cá nhân:</strong> Họ tên, số CCCD, số điện thoại, căn hộ và ngày lập đơn được xử lý ngay trên trình duyệt để tạo tệp Word; không gửi về máy chủ và không lưu thành danh sách. Số CCCD và số điện thoại có thể bỏ trống; nếu bỏ trống, tệp sẽ để dòng chấm để người làm đơn tự điền sau khi in. Nếu không nhập số điện thoại, các dòng “NGƯỜI GỬI” trong phần địa chỉ cuối tài liệu cũng để trống số điện thoại.
 </div>
-<p class="small">Mẫu đơn dùng để in, kiểm tra lại thông tin cá nhân trước khi ký và gửi.</p>
+<p class="small">Tệp tải xuống gồm đơn kiến nghị cá nhân và tài liệu phản biện phương án có thể phá dỡ Tháp B, được ghép ở phần sau và bắt đầu từ trang mới. Vui lòng kiểm tra lại nội dung trước khi ký và gửi.</p>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
@@ -69,25 +83,34 @@ button:disabled{opacity:.55;cursor:wait}
 <script>
 const $ = id => document.getElementById(id);
 const dotted = "................................................";
-function todayVietnam() {
+
+function localTodayISO() {
   const d = new Date();
-  return String(d.getDate()).padStart(2,"0") + " tháng " +
-    String(d.getMonth()+1).padStart(2,"0") + " năm " + d.getFullYear();
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 }
+function formatVietnamDate(iso) {
+  const parts = iso.split("-");
+  return "ngày " + parts[2] + " tháng " + parts[1] + " năm " + parts[0];
+}
+$("date").value = localTodayISO();
+
 $("form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const btn = $("download"), status = $("status");
   btn.disabled = true;
   status.textContent = "Đang tạo tệp Word...";
   try {
+    const phoneInput = $("phone").value.trim();
     const values = {
       name: $("name").value.trim(),
       cccd: $("cccd").value.trim() || dotted,
-      phone: $("phone").value.trim() || dotted,
+      phone: phoneInput || dotted,
       apartment: $("apartment").value.trim(),
       floor: $("floor").value.trim(),
       tower: $("tower").value,
-      date: todayVietnam()
+      date: formatVietnamDate($("date").value)
     };
     const response = await fetch("./mau-don-HH.docx");
     if (!response.ok) throw new Error("Không tải được mẫu Word. Hãy tải lại trang hoặc thử sau.");
@@ -109,12 +132,12 @@ $("form").addEventListener("submit", async (event) => {
     const a = document.createElement("a");
     const url = URL.createObjectURL(blob);
     a.href = url;
-    a.download = "Don_kien_nghi_HH_" + values.tower + "_" + values.apartment + ".docx";
+    a.download = "Don_kien_nghi_HH_" + values.tower + "_" + values.apartment + "_kem_phan_bien.docx";
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1500);
-    status.textContent = "Đã tạo đơn Word. Hãy mở tệp, kiểm tra thông tin và in hai mặt A4.";
+    status.textContent = "Đã tạo tệp Word gồm đơn kiến nghị và tài liệu phản biện ở phần sau.";
   } catch (err) {
     console.error(err);
     status.textContent = "Có lỗi: " + (err.message || "Không tạo được tệp.");
