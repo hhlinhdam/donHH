@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tạo đơn kiến nghị HH Linh Đàm</title>
+<style>
+:root{font-family:Arial,sans-serif;color:#202124;background:#f4f6f8}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 14px}
+main{max-width:680px;margin:0 auto;background:#fff;padding:26px;border-radius:14px;box-shadow:0 4px 22px #00000012}
+h1{font-size:23px;text-align:center;margin:0 0 8px;color:#9b1c1c}
+.sub{text-align:center;color:#5f6368;font-size:14px;line-height:1.5;margin:0 0 22px}
+label{display:block;font-weight:600;margin:14px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid #c9ced6;border-radius:8px;font-size:16px;background:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{width:100%;padding:14px;margin-top:22px;border:0;border-radius:9px;background:#a51d24;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+.note{font-size:13px;line-height:1.55;color:#5f6368;background:#f7f8fa;padding:12px;border-radius:8px;margin-top:16px}
+.status{font-size:14px;margin-top:12px;min-height:20px;color:#176b37}
+.small{font-size:12px;color:#6b7280}
+@media(max-width:520px){main{padding:20px 16px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM</h1>
+<p class="sub">Điền thông tin để tải đơn Word đã điền sẵn.<br>In hai mặt trên một tờ A4, sau đó ký tên.</p>
+
+<form id="form">
+<label for="name">Họ và tên *</label>
+<input id="name" required maxlength="120" autocomplete="name" placeholder="Nhập họ và tên">
+
+<label for="cccd">Số CCCD <span class="small">(không bắt buộc)</span></label>
+<input id="cccd" maxlength="20" inputmode="numeric" placeholder="Có thể bỏ trống để tự điền sau">
+
+<label for="phone">Số điện thoại <span class="small">(không bắt buộc)</span></label>
+<input id="phone" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Có thể bỏ trống để tự điền sau">
+
+<div class="grid">
+<div>
+<label for="apartment">Số căn hộ *</label>
+<input id="apartment" required maxlength="20" placeholder="Ví dụ: 2401">
+</div>
+<div>
+<label for="floor">Tầng *</label>
+<input id="floor" required maxlength="10" placeholder="Ví dụ: 24">
+</div>
+</div>
+
+<label for="tower">Tòa nhà *</label>
+<select id="tower" required>
+<option value="">-- Chọn tòa --</option>
+<option>HH1</option><option>HH2</option><option>HH3</option><option>HH4</option>
+</select>
+
+<button id="download" type="submit">TẢI ĐƠN WORD (.DOCX)</button>
+<div id="status" class="status" role="status"></div>
+</form>
+
+<div class="note">
+<strong>Lưu ý về thông tin cá nhân:</strong> Số CCCD và số điện thoại là tùy chọn. Nếu không nhập, đơn sẽ để dòng chấm để người làm đơn tự viết sau khi in. Thông tin bạn nhập được xử lý ngay trên trình duyệt để tạo tệp Word, không được gửi về máy chủ hoặc lưu thành danh sách.
+</div>
+<p class="small">Mẫu đơn dùng để in, kiểm tra lại thông tin cá nhân trước khi ký và gửi.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.7/pizzip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.37.11/docxtemplater.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const dotted = "................................................";
+function todayVietnam() {
+  const d = new Date();
+  return String(d.getDate()).padStart(2,"0") + " tháng " +
+    String(d.getMonth()+1).padStart(2,"0") + " năm " + d.getFullYear();
+}
+$("form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const btn = $("download"), status = $("status");
+  btn.disabled = true;
+  status.textContent = "Đang tạo tệp Word...";
+  try {
+    const values = {
+      name: $("name").value.trim(),
+      cccd: $("cccd").value.trim() || dotted,
+      phone: $("phone").value.trim() || dotted,
+      apartment: $("apartment").value.trim(),
+      floor: $("floor").value.trim(),
+      tower: $("tower").value,
+      date: todayVietnam()
+    };
+    const response = await fetch("./mau-don-HH.docx");
+    if (!response.ok) throw new Error("Không tải được mẫu Word. Hãy tải lại trang hoặc thử sau.");
+    const buffer = await response.arrayBuffer();
+    const zip = new PizZip(buffer);
+    const doc = new window.docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+      delimiters: { start: "{", end: "}" }
+    });
+    doc.render(values);
+    const blob = doc.getZip().generate({
+      type: "blob",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      compression: "DEFLATE"
+    });
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = "Don_kien_nghi_HH_" + values.tower + "_" + values.apartment + ".docx";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    status.textContent = "Đã tạo đơn Word. Hãy mở tệp, kiểm tra thông tin và in hai mặt A4.";
+  } catch (err) {
+    console.error(err);
+    status.textContent = "Có lỗi: " + (err.message || "Không tạo được tệp.");
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
