@@ -123,7 +123,7 @@ button:disabled{opacity:.55;cursor:wait}
   Chưa chọn tòa nhà. Tài liệu phản biện Tháp B chỉ được đính kèm khi chọn một trong bốn tòa B.
 </div>
 
-<button id="download" type="submit">TẢI ĐƠN WORD (.DOCX)</button>
+<button id="download" type="submit">TẠO ĐƠN</button>
 <div id="status" class="status" role="status"></div>
 <div id="downloadActions" class="download-actions" aria-live="polite"></div>
 </form>
@@ -261,7 +261,7 @@ $("form").addEventListener("submit", async (event) => {
     downloadLink.className = "download-primary";
     downloadLink.href = currentBlobUrl;
     downloadLink.download = fileName;
-    downloadLink.textContent = "NHẤN VÀO ĐÂY ĐỂ TẢI FILE WORD";
+    downloadLink.textContent = "NHẤN VÀO ĐÂY ĐỂ TẢI FILE WORD (*DOCX)";
     downloadLink.addEventListener("click", () => recordDownload(tower));
     actions.appendChild(downloadLink);
 
@@ -270,7 +270,7 @@ $("form").addEventListener("submit", async (event) => {
     openLink.href = currentBlobUrl;
     openLink.target = "_blank";
     openLink.rel = "noopener";
-    openLink.textContent = "Nếu không tải được, nhấn để mở tệp ở tab mới";
+    openLink.textContent = "Nếu không tải được, đọc hướng dẫn phía dưới";
     actions.appendChild(openLink);
 
     const help = document.createElement("p");
