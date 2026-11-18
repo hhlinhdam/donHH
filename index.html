@@ -8,16 +8,23 @@
 :root{font-family:Arial,sans-serif;color:#202124;background:#f4f6f8}
 *{box-sizing:border-box}
 body{margin:0;padding:24px 14px}
-main{max-width:720px;margin:0 auto;background:#fff;padding:26px;border-radius:14px;box-shadow:0 4px 22px #00000012}
+main{max-width:760px;margin:0 auto;background:#fff;padding:26px;border-radius:14px;box-shadow:0 4px 22px #00000012}
 h1{font-size:23px;text-align:center;margin:0 0 8px;color:#9b1c1c}
-.sub{text-align:center;color:#5f6368;font-size:14px;line-height:1.5;margin:0 0 22px}
+.sub{text-align:center;color:#5f6368;font-size:14px;line-height:1.6;margin:0 0 22px}
 label{display:block;font-weight:600;margin:14px 0 6px}
-input,select{width:100%;padding:12px;border:1px solid #c9ced6;border-radius:8px;font-size:16px;background:#fff}
+input[type="text"],input[type="date"],input:not([type]),select{width:100%;padding:12px;border:1px solid #c9ced6;border-radius:8px;font-size:16px;background:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+fieldset{border:1px solid #d8dde5;border-radius:10px;padding:12px 14px;margin:16px 0 8px}
+legend{font-weight:700;padding:0 6px}
+.choice{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;margin:4px 0;border-radius:8px;font-weight:400;line-height:1.45;cursor:pointer}
+.choice:hover{background:#f7f8fa}
+.choice input{margin-top:3px;flex:0 0 auto}
+.choice strong{display:block}
+.choice small{display:block;color:#68717d;font-size:13px;margin-top:2px}
 button{width:100%;padding:14px;margin-top:22px;border:0;border-radius:9px;background:#a51d24;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
 .note{font-size:13px;line-height:1.55;color:#5f6368;background:#f7f8fa;padding:12px;border-radius:8px;margin-top:16px}
-.status{font-size:14px;margin-top:12px;min-height:20px;color:#176b37}
+.status{font-size:14px;margin-top:12px;min-height:20px;color:#176b37;line-height:1.5}
 .small{font-size:12px;color:#6b7280}
 @media(max-width:520px){main{padding:20px 16px}.grid{grid-template-columns:1fr}}
 </style>
@@ -25,7 +32,11 @@ button:disabled{opacity:.55;cursor:wait}
 <body>
 <main>
 <h1>TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM</h1>
-<p class="sub">Hãy kiểm tra kỹ nội dung đơn trước khi ký, người tạo ra trang web này không chịu trách nhiệm về nội dung đơn, đơn có thể không chính xác hay không đúng nguyện vọng của bạn.<br>Điền thông tin sau đó ấn nút TẢI ĐƠN, nội dung file Word đó sẽ bao gồm thông tin căn hộ bạn đã điền.<br>In đơn và tài liệu kèm theo, mỗi địa chỉ nhận 1 bộ.<br>Thông tin các nơi nhận đơn nằm ở các trang đầu của file tải về.</p>
+<p class="sub">
+  Điền thông tin để tải đơn Word đã điền sẵn và danh sách địa chỉ người nhận theo lựa chọn.<br>
+  Nếu chọn HH1B, HH2B, HH3B hoặc HH4B, tệp sẽ kèm văn bản phản biện phương án phá dỡ Tháp B.<br>
+  In đơn, tài liệu kèm theo (nếu có) và gửi mỗi nơi nhận một bộ.
+</p>
 
 <form id="form">
 <label for="date">Ngày làm đơn *</label>
@@ -41,41 +52,70 @@ button:disabled{opacity:.55;cursor:wait}
 <input id="phone" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Có thể bỏ trống để tự điền sau">
 
 <div class="grid">
-<div>
-<label for="apartment">Số căn hộ *</label>
-<input id="apartment" required maxlength="20" placeholder="Ví dụ: 2401">
-</div>
-<div>
-<label for="floor">Tầng *</label>
-<input id="floor" required maxlength="10" placeholder="Ví dụ: 24">
-</div>
+  <div>
+    <label for="apartment">Số căn hộ *</label>
+    <input id="apartment" required maxlength="20" placeholder="Ví dụ: 2401">
+  </div>
+  <div>
+    <label for="floor">Tầng *</label>
+    <input id="floor" required maxlength="10" placeholder="Ví dụ: 24">
+  </div>
 </div>
 
 <label for="tower">Tòa nhà *</label>
 <select id="tower" required>
-<option value="">-- Chọn tòa --</option>
-<optgroup label="Cụm HH1">
-<option>HH1A</option><option>HH1B</option><option>HH1C</option>
-</optgroup>
-<optgroup label="Cụm HH2">
-<option>HH2A</option><option>HH2B</option><option>HH2C</option>
-</optgroup>
-<optgroup label="Cụm HH3">
-<option>HH3A</option><option>HH3B</option><option>HH3C</option>
-</optgroup>
-<optgroup label="Cụm HH4">
-<option>HH4A</option><option>HH4B</option><option>HH4C</option>
-</optgroup>
+  <option value="">-- Chọn tòa --</option>
+  <optgroup label="Cụm HH1">
+    <option>HH1A</option><option>HH1B</option><option>HH1C</option>
+  </optgroup>
+  <optgroup label="Cụm HH2">
+    <option>HH2A</option><option>HH2B</option><option>HH2C</option>
+  </optgroup>
+  <optgroup label="Cụm HH3">
+    <option>HH3A</option><option>HH3B</option><option>HH3C</option>
+  </optgroup>
+  <optgroup label="Cụm HH4">
+    <option>HH4A</option><option>HH4B</option><option>HH4C</option>
+  </optgroup>
 </select>
 
-<button id="download" type="submit">TẢI ĐƠN WORD KÈM TÀI LIỆU (.DOCX)</button>
+<fieldset>
+  <legend>Chọn nhóm nơi nhận đơn *</legend>
+  <label class="choice">
+    <input type="radio" name="recipientGroup" value="tat-ca" checked>
+    <span>
+      <strong>Nơi nhận nên gửi – tất cả địa chỉ</strong>
+      <small>Gồm toàn bộ các cơ quan, cá nhân trong danh sách, trừ VTV và Đài Phát thanh, Truyền hình Hà Nội.</small>
+    </span>
+  </label>
+  <label class="choice">
+    <input type="radio" name="recipientGroup" value="trung-uong">
+    <span>
+      <strong>Nơi nhận Trung ương – 4 địa chỉ</strong>
+      <small>Ông Tô Lâm, ông Trần Thanh Mẫn, ông Lê Minh Hưng và ông Nguyễn Quốc Đoàn.</small>
+    </span>
+  </label>
+  <label class="choice">
+    <input type="radio" name="recipientGroup" value="truyen-thong">
+    <span>
+      <strong>Nơi nhận truyền thông – 2 địa chỉ</strong>
+      <small>Đài Truyền hình Việt Nam (VTV) và Cơ quan Báo và Phát thanh, Truyền hình Hà Nội.</small>
+    </span>
+  </label>
+</fieldset>
+
+<div id="appendixInfo" class="note" aria-live="polite">
+  Chưa chọn tòa nhà. Tài liệu phản biện Tháp B chỉ được đính kèm khi chọn một trong bốn tòa B.
+</div>
+
+<button id="download" type="submit">TẢI ĐƠN WORD (.DOCX)</button>
 <div id="status" class="status" role="status"></div>
 </form>
 
 <div class="note">
-<strong>Lưu ý về thông tin cá nhân:</strong> Nội dung bạn nhập được xử lý ngay trên thiết bị của bạn và không lưu thành danh sách để đảm bảo an toàn. Tuy nhiên bạn có thể không điền Số CCCD và số điện thoại; nếu bỏ trống, hãy nhớ điền số cccd và SĐT ở nội dung đơn và phần Người gửi của tem dán phong thư cho đầy đủ.
+  <strong>Lưu ý về thông tin cá nhân:</strong> Nội dung bạn nhập được xử lý ngay trên thiết bị của bạn, không gửi về máy chủ và không lưu thành danh sách. CCCD và số điện thoại là tùy chọn; nếu bỏ trống, đơn sẽ để dòng chấm để bạn tự điền sau khi in.
 </div>
-<p class="small">Vui lòng kiểm tra lại nội dung trước khi ký và gửi.</p>
+<p class="small">Vui lòng kiểm tra lại thông tin, nội dung đơn và danh sách nơi nhận trước khi ký, gửi.</p>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
@@ -83,6 +123,7 @@ button:disabled{opacity:.55;cursor:wait}
 <script>
 const $ = id => document.getElementById(id);
 const dotted = "................................................";
+const towerB = new Set(["HH1B", "HH2B", "HH3B", "HH4B"]);
 
 function localTodayISO() {
   const d = new Date();
@@ -94,7 +135,18 @@ function formatVietnamDate(iso) {
   const parts = iso.split("-");
   return "ngày " + parts[2] + " tháng " + parts[1] + " năm " + parts[0];
 }
+function updateAppendixInfo() {
+  const tower = $("tower").value;
+  if (!tower) {
+    $("appendixInfo").textContent = "Chưa chọn tòa nhà. Tài liệu phản biện Tháp B chỉ được đính kèm khi chọn một trong bốn tòa B.";
+  } else if (towerB.has(tower)) {
+    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ giữ đoạn đề cập tài liệu kèm theo và đính kèm đầy đủ phần phản biện phương án có thể phá dỡ Tháp B.";
+  } else {
+    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ tự bỏ đoạn đề cập tài liệu phản biện Tháp B và không đính kèm 3 trang phản biện.";
+  }
+}
 $("date").value = localTodayISO();
+$("tower").addEventListener("change", updateAppendixInfo);
 
 $("form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -102,20 +154,27 @@ $("form").addEventListener("submit", async (event) => {
   btn.disabled = true;
   status.textContent = "Đang tạo tệp Word...";
   try {
-    const phoneInput = $("phone").value.trim();
+    const tower = $("tower").value;
+    const group = document.querySelector('input[name="recipientGroup"]:checked')?.value;
+    if (!towerB.has(tower) && !group) throw new Error("Vui lòng chọn nhóm nơi nhận.");
+
     const values = {
       name: $("name").value.trim(),
       cccd: $("cccd").value.trim() || dotted,
-      phone: phoneInput || dotted,
+      phone: $("phone").value.trim() || dotted,
       apartment: $("apartment").value.trim(),
       floor: $("floor").value.trim(),
-      tower: $("tower").value,
+      tower,
       date: formatVietnamDate($("date").value)
     };
-    const response = await fetch("./mau-don-HH.docx");
-    if (!response.ok) throw new Error("Không tải được mẫu Word. Hãy tải lại trang hoặc thử sau.");
+
+    const isB = towerB.has(tower);
+    const templateName = "mau-don-HH-" + group + "-" + (isB ? "B" : "khac") + ".docx";
+    const response = await fetch("./" + templateName);
+    if (!response.ok) throw new Error("Không tải được mẫu Word " + templateName + ". Hãy kiểm tra đã tải đủ 6 tệp mẫu lên GitHub cùng thư mục với index.html chưa.");
     if (typeof window.PizZip !== "function") throw new Error("Chưa tải được thư viện PizZip. Hãy tải lại trang hoặc thử trình duyệt khác.");
     if (typeof window.docxtemplater !== "function") throw new Error("Chưa tải được thư viện Docxtemplater. Hãy tải lại trang hoặc thử trình duyệt khác.");
+
     const buffer = await response.arrayBuffer();
     const zip = new window.PizZip(buffer);
     const doc = new window.docxtemplater(zip, {
@@ -124,6 +183,7 @@ $("form").addEventListener("submit", async (event) => {
       delimiters: { start: "{", end: "}" }
     });
     doc.render(values);
+
     const blob = doc.getZip().generate({
       type: "blob",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -132,12 +192,15 @@ $("form").addEventListener("submit", async (event) => {
     const a = document.createElement("a");
     const url = URL.createObjectURL(blob);
     a.href = url;
-    a.download = "Don_kien_nghi_HH_" + values.tower + "_" + values.apartment + "_kem_phan_bien.docx";
+    a.download = "Don_kien_nghi_HH_" + tower + "_" + values.apartment + "_" + group + (isB ? "_kem_phan_bien_Thap_B" : "") + ".docx";
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1500);
-    status.textContent = "Đã tạo tệp Word gồm đơn kiến nghị và tài liệu phản biện ở phần sau.";
+
+    status.textContent = isB
+      ? "Đã tạo đơn theo nhóm nơi nhận đã chọn, kèm văn bản phản biện Tháp B."
+      : "Đã tạo đơn theo nhóm nơi nhận đã chọn; không kèm tài liệu phản biện Tháp B.";
   } catch (err) {
     console.error(err);
     status.textContent = "Có lỗi: " + (err.message || "Không tạo được tệp.");
