@@ -1,0 +1,59 @@
+HƯỚNG DẪN KẾT NỐI THỐNG KÊ LƯỢT TẢI VỚI GOOGLE SHEETS
+
+TỔNG QUAN
+- Website ghi nhận một lượt khi tạo xong tệp Word và kích hoạt lệnh tải xuống.
+- Mỗi lượt chỉ gửi hai thông tin: thời điểm ghi nhận và mã tòa nhà (HH1A...HH4C).
+- Không gửi họ tên, CCCD, số điện thoại, số căn hộ, tầng, ngày làm đơn, nhóm nơi nhận hoặc nội dung đơn lên Google Sheets.
+- Google Sheets dùng một dòng cho mỗi lượt; trang web tự cộng tổng và số lượt của từng tòa.
+- Đây là số lượt nhấn tạo/tải tệp, không xác nhận chắc chắn file đã lưu thành công; số liệu có thể sai lệch do lỗi mạng, chặn yêu cầu hoặc người dùng nhấn nhiều lần.
+
+PHẦN A – TẠO GOOGLE SHEET
+1. Đăng nhập tài khoản Google dùng để quản lý số liệu.
+2. Tạo một Google Sheets mới, đặt tên ví dụ: Thống kê lượt tải đơn HH Linh Đàm.
+3. Sao chép ID của Sheet trong URL. Ví dụ URL:
+   https://docs.google.com/spreadsheets/d/1AbCdEf...XYZ/edit
+   ID là đoạn giữa /d/ và /edit.
+
+PHẦN B – TẠO GOOGLE APPS SCRIPT
+1. Trong Google Sheet, chọn Extensions (Tiện ích mở rộng) → Apps Script.
+2. Xóa nội dung mặc định trong Code.gs.
+3. Mở tệp Code.gs đi kèm gói cập nhật, sao chép toàn bộ nội dung vào trình soạn thảo Apps Script.
+4. Thay dòng:
+   const SPREADSHEET_ID = 'DAN_ID_GOOGLE_SHEET_VAO_DAY';
+   bằng ID Google Sheet vừa sao chép, giữ nguyên dấu nháy đơn.
+5. Nhấn Save.
+6. Chọn hàm testConnection ở danh sách hàm rồi nhấn Run. Cấp quyền truy cập Google Sheets khi được hỏi. Chạy thành công sẽ tự tạo tab LuotTai với hàng tiêu đề.
+
+PHẦN C – TRIỂN KHAI WEB APP
+1. Trong Apps Script, nhấn Deploy → New deployment.
+2. Nhấn biểu tượng bánh răng cạnh Select type và chọn Web app.
+3. Description: Thống kê lượt tải HH Linh Đàm.
+4. Execute as: Me.
+5. Who has access: Anyone (Bất kỳ ai).
+6. Nhấn Deploy và cấp quyền nếu được yêu cầu.
+7. Sao chép Web app URL có dạng:
+   https://script.google.com/macros/s/...../exec
+   Không dùng URL của trang chỉnh sửa Apps Script.
+
+PHẦN D – GẮN URL VÀO WEBSITE
+1. Mở index.html trong bộ cập nhật.
+2. Tìm dòng:
+   const STATS_ENDPOINT = "DAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_VAO_DAY";
+3. Thay nội dung trong dấu nháy bằng Web app URL vừa sao chép. Ví dụ:
+   const STATS_ENDPOINT = "https://script.google.com/macros/s/AKfy.../exec";
+4. Lưu index.html.
+5. Tải index.html đã sửa cùng 14 mẫu Word hiện có lên thư mục gốc GitHub repository, ghi đè index.html cũ. Không cần tải Code.gs lên GitHub; Code.gs nằm trong dự án Apps Script.
+6. Commit changes, mở website và nhấn Ctrl+F5.
+
+PHẦN E – KIỂM TRA
+1. Mở website, phần THỐNG KÊ LƯỢT TẢI ĐƠN sẽ hiện tổng lượt và 12 tòa.
+2. Tạo thử một file Word với tòa HH1A.
+3. Mở Google Sheet, tab LuotTai: sẽ có thêm một dòng với thời điểm và HH1A.
+4. Tải lại website; tổng lượt tăng 1 và HH1A tăng 1.
+5. Thử một tòa khác để kiểm tra.
+
+LƯU Ý QUAN TRỌNG
+- Apps Script Web App được công khai để người truy cập website có thể gửi lượt thống kê. Vì endpoint công khai nên người khác có thể cố tình gửi yêu cầu giả, làm số liệu tăng không đúng thực tế. Không dùng số liệu này làm căn cứ xác nhận số người/căn hộ đã gửi đơn.
+- Không đưa dữ liệu cá nhân vào tham số URL hoặc Google Sheet. Mã nguồn mẫu hiện chỉ chấp nhận tên tòa thuộc danh sách 12 tòa.
+- Nếu thay đổi mã nguồn Apps Script sau khi triển khai, vào Deploy → Manage deployments → Edit (biểu tượng bút chì) → chọn New version → Deploy để cập nhật bản Web App.
+- Nếu không muốn công khai số liệu chi tiết trong Sheet, chỉ chia sẻ website cho người xem thống kê; không chia sẻ quyền truy cập Google Sheet.

@@ -26,6 +26,15 @@ button:disabled{opacity:.55;cursor:wait}
 .note{font-size:13px;line-height:1.55;color:#5f6368;background:#f7f8fa;padding:12px;border-radius:8px;margin-top:16px}
 .status{font-size:14px;margin-top:12px;min-height:20px;color:#176b37;line-height:1.5}
 .small{font-size:12px;color:#6b7280}
+.stats{margin-top:22px;padding:16px;border:1px solid #e1e5eb;border-radius:10px;background:#fff}
+.stats h2{font-size:18px;margin:0 0 12px;color:#30343b}
+.stats-total{display:flex;align-items:baseline;gap:8px;padding:10px 12px;background:#f7f8fa;border-radius:8px;margin-bottom:12px}
+.stats-total strong{font-size:30px;color:#9b1c1c}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats-item{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;background:#f7f8fa;border-radius:7px;font-size:14px}
+.stats-item strong{font-variant-numeric:tabular-nums}
+.stats-note{font-size:12px;line-height:1.5;color:#6b7280;margin:12px 0 0}
+@media(max-width:520px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){main{padding:20px 16px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -33,9 +42,9 @@ button:disabled{opacity:.55;cursor:wait}
 <main>
 <h1>TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM</h1>
 <p class="sub">
-  Điền thông tin để tải đơn Word đã điền sẵn thông tin căn hộ và danh sách địa chỉ người nhận theo lựa chọn.<br>
-  Nếu chọn HH1B, HH2B, HH3B hoặc HH4B, tệp sẽ kèm văn bản Phản biện phương án phá dỡ Tháp B. Đơn gửi tới mỗi địa chỉ phải kèm theo 1 bộ Phản biện<br>
-  In đơn, tài liệu kèm theo (nếu có) và gửi mỗi nơi nhận một bộ. 2 mặt của đơn đều có nguyện vọng không di dời, không lo bị tráo đơn
+  Điền thông tin để tải đơn Word đã điền sẵn và danh sách địa chỉ người nhận theo lựa chọn.<br>
+  Nếu chọn HH1B, HH2B, HH3B hoặc HH4B, tệp sẽ kèm văn bản phản biện phương án phá dỡ Tháp B.<br>
+  In đơn, tài liệu kèm theo (nếu có) và gửi mỗi nơi nhận một bộ.
 </p>
 
 <form id="form">
@@ -80,28 +89,29 @@ button:disabled{opacity:.55;cursor:wait}
 </select>
 
 <fieldset>
-  <legend>Chọn nhóm nơi nhận đơn *</legend>
+  <legend>Chọn nhóm nơi nhận đơn (có thể tích chọn nhiều nhóm) *</legend>
   <label class="choice">
-    <input type="radio" name="recipientGroup" value="tat-ca" checked>
+    <input type="checkbox" name="recipientGroup" value="chinh">
     <span>
-      <strong>Nơi nhận nên gửi – tất cả địa chỉ</strong>
-      <small>Gồm toàn bộ các cơ quan, cá nhân trong danh sách, trừ VTV và Đài Phát thanh, Truyền hình Hà Nội.</small>
+      <strong>Nơi nhận nên gửi – 16 địa chỉ</strong>
+      <small>Các cơ quan tại Hà Nội và cơ quan chuyên môn; không bao gồm 4 nơi nhận Trung ương và 2 cơ quan truyền thông.</small>
     </span>
   </label>
   <label class="choice">
-    <input type="radio" name="recipientGroup" value="trung-uong">
+    <input type="checkbox" name="recipientGroup" value="trung-uong">
     <span>
       <strong>Nơi nhận Trung ương – 4 địa chỉ</strong>
       <small>Ông Tô Lâm, ông Trần Thanh Mẫn, ông Lê Minh Hưng và ông Nguyễn Quốc Đoàn.</small>
     </span>
   </label>
   <label class="choice">
-    <input type="radio" name="recipientGroup" value="truyen-thong">
+    <input type="checkbox" name="recipientGroup" value="truyen-thong">
     <span>
       <strong>Nơi nhận truyền thông – 2 địa chỉ</strong>
       <small>Đài Truyền hình Việt Nam (VTV) và Cơ quan Báo và Phát thanh, Truyền hình Hà Nội.</small>
     </span>
   </label>
+  <p id="recipientCount" class="small" aria-live="polite">Bạn chưa chọn nhóm nơi nhận nào.</p>
 </fieldset>
 
 <div id="appendixInfo" class="note" aria-live="polite">
@@ -112,10 +122,16 @@ button:disabled{opacity:.55;cursor:wait}
 <div id="status" class="status" role="status"></div>
 </form>
 
+<section class="stats" aria-live="polite">
+  <h2>THỐNG KÊ LƯỢT TẢI ĐƠN</h2>
+  <div class="stats-total"><strong id="totalDownloads">—</strong><span>tổng lượt tải ghi nhận</span></div>
+  <div id="towerStats" class="stats-grid"><div class="small">Đang tải số liệu thống kê...</div></div>
+  <p class="stats-note">Lưu ý: Đây chỉ là thống kê lượt nhấn tải/tạo tệp Word, không xác nhận người dùng đã tải hoặc in thành công. Dữ liệu có thể không chính xác do lỗi kết nối hoặc lượt nhấn lặp. Biểu mẫu không lưu họ tên, CCCD, số điện thoại, số căn hộ hay thông tin cá nhân khác; hệ thống thống kê chỉ ghi nhận thời điểm và tòa nhà được chọn.</p>
+</section>
 <div class="note">
-  <strong>Lưu ý về thông tin cá nhân:</strong> Nội dung bạn nhập được xử lý ngay trên thiết bị của bạn, không gửi về máy chủ và không lưu thành danh sách. CCCD và số điện thoại là tùy chọn; nếu bỏ trống, đơn sẽ để dòng chấm để bạn tự điền sau khi in.
+  <strong>Lưu ý về thông tin cá nhân:</strong> Thông tin bạn nhập được xử lý ngay trên trình duyệt để tạo tệp Word, không gửi về Google Sheets và không lưu thành danh sách. Chỉ có tòa nhà được chọn và thời điểm nhấn tải được gửi để thống kê tổng lượt tải theo tòa. CCCD và số điện thoại là tùy chọn; nếu bỏ trống, đơn sẽ để dòng chấm để bạn tự điền sau khi in.
 </div>
-<p class="small">Vui lòng kiểm tra lại thông tin, nội dung đơn và danh sách nơi nhận trước khi ký, gửi.</p>
+<p class="small">Vui lòng kiểm tra thông tin, nội dung đơn và danh sách nơi nhận trước khi ký, gửi.</p>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
@@ -123,6 +139,9 @@ button:disabled{opacity:.55;cursor:wait}
 <script>
 const $ = id => document.getElementById(id);
 const dotted = "................................................";
+// Dán URL Web App Google Apps Script vào hằng số bên dưới sau khi triển khai.
+const STATS_ENDPOINT = "DAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_VAO_DAY";
+const towerNames = ["HH1A","HH1B","HH1C","HH2A","HH2B","HH2C","HH3A","HH3B","HH3C","HH4A","HH4B","HH4C"];
 const towerB = new Set(["HH1B", "HH2B", "HH3B", "HH4B"]);
 
 function localTodayISO() {
@@ -135,6 +154,31 @@ function formatVietnamDate(iso) {
   const parts = iso.split("-");
   return "ngày " + parts[2] + " tháng " + parts[1] + " năm " + parts[0];
 }
+function renderStats(data) {
+  $("totalDownloads").textContent = Number(data.total || 0).toLocaleString("vi-VN");
+  const counts = data.towers || {};
+  $("towerStats").innerHTML = towerNames.map(t => `<div class="stats-item"><span>${t}</span><strong>${Number(counts[t] || 0).toLocaleString("vi-VN")}</strong></div>`).join("");
+}
+function loadStats() {
+  if (!STATS_ENDPOINT.startsWith("https://script.google.com/macros/s/")) {
+    $("towerStats").innerHTML = '<div class="small">Chưa cấu hình kết nối Google Sheets.</div>';
+    $("totalDownloads").textContent = "—";
+    return;
+  }
+  const callback = "hhStatsCallback";
+  window[callback] = data => { renderStats(data); delete window[callback]; };
+  const script = document.createElement("script");
+  script.src = STATS_ENDPOINT + "?action=stats&callback=" + callback + "&v=" + Date.now();
+  script.onerror = () => { $("towerStats").innerHTML = '<div class="small">Chưa tải được số liệu. Vui lòng thử tải lại trang.</div>'; };
+  document.head.appendChild(script);
+}
+function recordDownload(tower) {
+  if (!STATS_ENDPOINT.startsWith("https://script.google.com/macros/s/")) return;
+  // Chỉ gửi tòa nhà và loại sự kiện; tuyệt đối không gửi dữ liệu người điền form.
+  const pixel = new Image();
+  pixel.src = STATS_ENDPOINT + "?action=hit&tower=" + encodeURIComponent(tower) + "&v=" + Date.now();
+  setTimeout(loadStats, 1800);
+}
 function updateAppendixInfo() {
   const tower = $("tower").value;
   if (!tower) {
@@ -145,6 +189,13 @@ function updateAppendixInfo() {
     $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ tự bỏ đoạn đề cập tài liệu phản biện Tháp B và không đính kèm 3 trang phản biện.";
   }
 }
+function updateRecipientCount() {
+  const selected = Array.from(document.querySelectorAll('input[name="recipientGroup"]:checked')).map(el => el.value);
+  const total = selected.reduce((sum, g) => sum + ({"chinh":16,"trung-uong":4,"truyen-thong":2}[g]), 0);
+  $("recipientCount").textContent = total ? "Tổng số nơi nhận được chọn: " + total + " địa chỉ." : "Bạn chưa chọn nhóm nơi nhận nào.";
+}
+document.querySelectorAll('input[name="recipientGroup"]').forEach(el => el.addEventListener("change", updateRecipientCount));
+loadStats();
 $("date").value = localTodayISO();
 $("tower").addEventListener("change", updateAppendixInfo);
 
@@ -155,8 +206,9 @@ $("form").addEventListener("submit", async (event) => {
   status.textContent = "Đang tạo tệp Word...";
   try {
     const tower = $("tower").value;
-    const group = document.querySelector('input[name="recipientGroup"]:checked')?.value;
-    if (!towerB.has(tower) && !group) throw new Error("Vui lòng chọn nhóm nơi nhận.");
+    const selectedGroups = Array.from(document.querySelectorAll('input[name="recipientGroup"]:checked')).map(el => el.value);
+    if (selectedGroups.length === 0) throw new Error("Vui lòng tích chọn ít nhất một nhóm nơi nhận.");
+    const group = ["chinh", "trung-uong", "truyen-thong"].filter(g => selectedGroups.includes(g)).join("-");
 
     const values = {
       name: $("name").value.trim(),
@@ -171,7 +223,7 @@ $("form").addEventListener("submit", async (event) => {
     const isB = towerB.has(tower);
     const templateName = "mau-don-HH-" + group + "-" + (isB ? "B" : "khac") + ".docx";
     const response = await fetch("./" + templateName);
-    if (!response.ok) throw new Error("Không tải được mẫu Word " + templateName + ". Hãy kiểm tra đã tải đủ 6 tệp mẫu lên GitHub cùng thư mục với index.html chưa.");
+    if (!response.ok) throw new Error("Không tải được mẫu Word " + templateName + ". Hãy kiểm tra đã tải đủ 14 tệp mẫu lên GitHub cùng thư mục với index.html chưa.");
     if (typeof window.PizZip !== "function") throw new Error("Chưa tải được thư viện PizZip. Hãy tải lại trang hoặc thử trình duyệt khác.");
     if (typeof window.docxtemplater !== "function") throw new Error("Chưa tải được thư viện Docxtemplater. Hãy tải lại trang hoặc thử trình duyệt khác.");
 
@@ -197,10 +249,10 @@ $("form").addEventListener("submit", async (event) => {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1500);
+    recordDownload(tower);
 
-    status.textContent = isB
-      ? "Đã tạo đơn theo nhóm nơi nhận đã chọn, kèm văn bản phản biện Tháp B."
-      : "Đã tạo đơn theo nhóm nơi nhận đã chọn; không kèm tài liệu phản biện Tháp B.";
+    const recipientTotal = selectedGroups.reduce((sum, g) => sum + ({"chinh":16,"trung-uong":4,"truyen-thong":2}[g]), 0);
+    status.textContent = "Đã tạo đơn với " + recipientTotal + " nơi nhận riêng biệt." + (isB ? " Tệp kèm văn bản phản biện Tháp B." : " Không kèm tài liệu phản biện Tháp B.");
   } catch (err) {
     console.error(err);
     status.textContent = "Có lỗi: " + (err.message || "Không tạo được tệp.");
