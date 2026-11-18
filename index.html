@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tạo đơn kiến nghị HH Linh Đàm</title>
+<title>Tạo đơn kiến nghị HH Linh Đàm NHANH</title>
 <style>
 :root{font-family:Arial,sans-serif;color:#202124;background:#f4f6f8}
 *{box-sizing:border-box}
@@ -43,8 +43,8 @@ button:disabled{opacity:.55;cursor:wait}
 <h1>TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM</h1>
 <p class="sub">
   Điền thông tin để tải đơn Word đã điền sẵn và danh sách địa chỉ người nhận theo lựa chọn.<br>
-  Nếu chọn HH1B, HH2B, HH3B hoặc HH4B, tệp sẽ kèm văn bản phản biện phương án phá dỡ Tháp B.<br>
-  In đơn, tài liệu kèm theo (nếu có) và gửi mỗi nơi nhận một bộ.
+  Nếu chọn HH1B, HH2B, HH3B hoặc HH4B, tệp sẽ kèm văn bản phản biện phương án phá dỡ Tháp B, cần in thêm tài liệu này gửi đến mỗi địa chỉ nhận.<br>
+  Đọc kỹ nội dung trước khi ký nếu cần.
 </p>
 
 <form id="form">
@@ -89,26 +89,26 @@ button:disabled{opacity:.55;cursor:wait}
 </select>
 
 <fieldset>
-  <legend>Chọn nhóm nơi nhận đơn (có thể tích chọn nhiều nhóm) *</legend>
+  <legend>Nơi nhận đơn (nên chọn tất cả) *</legend>
   <label class="choice">
     <input type="checkbox" name="recipientGroup" value="chinh">
     <span>
-      <strong>Nơi nhận nên gửi – 16 địa chỉ</strong>
-      <small>Các cơ quan tại Hà Nội và cơ quan chuyên môn; không bao gồm 4 nơi nhận Trung ương và 2 cơ quan truyền thông.</small>
+      <strong>Bắt buộc – 16 địa chỉ</strong>
+      <small>Các cơ quan tại Hà Nội trực tiếp quyết định, ảnh hưởng tới khu HH. Số lượng cần in khoảng 80-90 tờ A4 </small>
     </span>
   </label>
   <label class="choice">
     <input type="checkbox" name="recipientGroup" value="trung-uong">
     <span>
       <strong>Nơi nhận Trung ương – 4 địa chỉ</strong>
-      <small>Ông Tô Lâm, ông Trần Thanh Mẫn, ông Lê Minh Hưng và ông Nguyễn Quốc Đoàn.</small>
+      <small>Các bên có tác động tới Hà Nội, cần in khoảng 20-25 tờ A4.</small>
     </span>
   </label>
   <label class="choice">
     <input type="checkbox" name="recipientGroup" value="truyen-thong">
     <span>
       <strong>Nơi nhận truyền thông – 2 địa chỉ</strong>
-      <small>Đài Truyền hình Việt Nam (VTV) và Cơ quan Báo và Phát thanh, Truyền hình Hà Nội.</small>
+      <small>Đài Truyền hình Việt Nam (VTV) và Cơ quan Báo và Phát thanh, Truyền hình Hà Nội có tác động tới các phóng sự, báo chí cần đề nghị thể hiện đúng, đầy đủ nguyện vọng của cư dân HH.</small>
     </span>
   </label>
   <p id="recipientCount" class="small" aria-live="polite">Bạn chưa chọn nhóm nơi nhận nào.</p>
@@ -126,7 +126,7 @@ button:disabled{opacity:.55;cursor:wait}
   <h2>THỐNG KÊ LƯỢT TẢI ĐƠN</h2>
   <div class="stats-total"><strong id="totalDownloads">—</strong><span>tổng lượt tải ghi nhận</span></div>
   <div id="towerStats" class="stats-grid"><div class="small">Đang tải số liệu thống kê...</div></div>
-  <p class="stats-note">Lưu ý: Đây chỉ là thống kê lượt nhấn tải/tạo tệp Word, không xác nhận người dùng đã tải hoặc in thành công. Dữ liệu có thể không chính xác do lỗi kết nối hoặc lượt nhấn lặp. Biểu mẫu không lưu họ tên, CCCD, số điện thoại, số căn hộ hay thông tin cá nhân khác; hệ thống thống kê chỉ ghi nhận thời điểm và tòa nhà được chọn.</p>
+  <p class="stats-note">Đây chỉ là thống kê lượt nhấn tải/tạo tệp Word, không xác nhận người dùng đã tải hoặc in thành công. Dữ liệu có thể không chính xác do lỗi kết nối hoặc lượt nhấn lặp. Biểu mẫu không lưu họ tên, CCCD, số điện thoại, số căn hộ hay thông tin cá nhân khác; hệ thống thống kê chỉ ghi nhận thời điểm và tòa nhà được chọn.</p>
 </section>
 <div class="note">
   <strong>Lưu ý về thông tin cá nhân:</strong> Thông tin bạn nhập được xử lý ngay trên trình duyệt để tạo tệp Word, không gửi về Google Sheets và không lưu thành danh sách. Chỉ có tòa nhà được chọn và thời điểm nhấn tải được gửi để thống kê tổng lượt tải theo tòa. CCCD và số điện thoại là tùy chọn; nếu bỏ trống, đơn sẽ để dòng chấm để bạn tự điền sau khi in.
