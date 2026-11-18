@@ -1,0 +1,20 @@
+BỘ CẬP NHẬT WEBSITE TẠO ĐƠN KIẾN NGHỊ HH LINH ĐÀM
+
+CÁCH CẬP NHẬT GITHUB PAGES
+1. Giải nén toàn bộ ZIP này.
+2. Mở repository GitHub đang dùng cho website.
+3. Xóa hoặc ghi đè các tệp mẫu Word cũ có tên mau-don-HH-*.docx.
+4. Tải lên index.html và đủ 14 tệp mau-don-HH-*.docx trong thư mục gốc (cùng cấp).
+5. Giữ Code.gs riêng trong Apps Script; chỉ cập nhật nếu bạn muốn thay mã thống kê.
+6. Chờ GitHub Pages triển khai xong, sau đó tải lại trang bằng Ctrl+F5.
+
+CÁCH TẠO ĐƠN
+- Chọn một hoặc nhiều nhóm nơi nhận. Website tạo một bản đơn riêng cho từng nơi nhận được chọn, gộp trong một tệp Word tải xuống.
+- Nhóm “Tối thiểu cần gửi” có 16 nơi nhận; “Trung ương” có 4; “Báo chí - truyền thông” có 2. Chọn cả ba sẽ tạo 22 bản đơn.
+- Bản đơn giữ nguyên mục 3. KIẾN NGHỊ CỤ THỂ, chữ ký và footer riêng theo từng cơ quan từ tài liệu nguồn.
+- Nếu chọn HH1B, HH2B, HH3B hoặc HH4B: giữ đoạn thông báo tài liệu kèm theo và nối phần phản biện Tháp B ở cuối tệp. Nếu chọn tòa khác: bỏ đoạn thông báo và không nối phần phản biện.
+
+LƯU Ý VỀ DANH SÁCH
+Tài liệu nguồn có thêm một bản gửi UBND phường Hoàng Liệt (23 bản tổng cộng). Nhóm checkbox hiện tại được cấu hình 16 + 4 + 2 = 22 nơi nhận; bản gửi UBND phường Hoàng Liệt không nằm trong 22 nơi nhận được chọn để số lượng đầu ra khớp giao diện hiện tại.
+
+Các tệp Word mẫu đã được tạo từ tài liệu nguồn Don_kien_nghi_HH_23_co_quan_23_ban(2).docx. Không đổi tên các tệp mau-don-HH-*.docx vì index.html tham chiếu trực tiếp đến tên tệp.

@@ -3,7 +3,7 @@
  * Chỉ lưu thời điểm và mã tòa nhà. Không nhận họ tên, CCCD, điện thoại,
  * số căn hộ, tầng hoặc bất kỳ nội dung nào khác của biểu mẫu.
  */
-const SPREADSHEET_ID = '1s8wdrRX9tCjKiTMNW__1ZvpE4DO-z1ZjiMxLRssTO0w';
+const SPREADSHEET_ID = 'DAN_ID_GOOGLE_SHEET_VAO_DAY';
 const LOG_SHEET_NAME = 'LuotTai';
 const TOWERS = ['HH1A','HH1B','HH1C','HH2A','HH2B','HH2C','HH3A','HH3B','HH3C','HH4A','HH4B','HH4C'];
 
