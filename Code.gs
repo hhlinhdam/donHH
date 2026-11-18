@@ -3,12 +3,12 @@
  * Chỉ lưu thời điểm và mã tòa nhà. Không nhận họ tên, CCCD, điện thoại,
  * số căn hộ, tầng hoặc bất kỳ nội dung nào khác của biểu mẫu.
  */
-const SPREADSHEET_ID = 'DAN_ID_GOOGLE_SHEET_VAO_DAY';
+const SPREADSHEET_ID = '1s8wdrRX9tCjKiTMNW__1ZvpE4DO-z1ZjiMxLRssTO0w';
 const LOG_SHEET_NAME = 'LuotTai';
 const TOWERS = ['HH1A','HH1B','HH1C','HH2A','HH2B','HH2C','HH3A','HH3B','HH3C','HH4A','HH4B','HH4C'];
 
 function getLogSheet_() {
-  if (!SPREADSHEET_ID || SPREADSHEET_ID === 'DAN_ID_GOOGLE_SHEET_VAO_DAY') {
+  if (!SPREADSHEET_ID || SPREADSHEET_ID === '1s8wdrRX9tCjKiTMNW__1ZvpE4DO-z1ZjiMxLRssTO0w') {
     throw new Error('Chưa cấu hình SPREADSHEET_ID trong Code.gs');
   }
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
