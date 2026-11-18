@@ -126,7 +126,7 @@ button:disabled{opacity:.55;cursor:wait}
   <h2>THỐNG KÊ LƯỢT TẢI ĐƠN</h2>
   <div class="stats-total"><strong id="totalDownloads">—</strong><span>tổng lượt tải ghi nhận</span></div>
   <div id="towerStats" class="stats-grid"><div class="small">Đang tải số liệu thống kê...</div></div>
-  <p class="stats-note">Đây chỉ là thống kê lượt nhấn tải/tạo tệp Word, không xác nhận người dùng đã tải hoặc in thành công. Dữ liệu có thể không chính xác do lỗi kết nối hoặc lượt nhấn lặp. Biểu mẫu không lưu họ tên, CCCD, số điện thoại, số căn hộ hay thông tin cá nhân khác; hệ thống thống kê chỉ ghi nhận thời điểm và tòa nhà được chọn.</p>
+  <p class="stats-note">_____</p>
 </section>
 <div class="note">
   <strong>Lưu ý về thông tin cá nhân:</strong> Thông tin bạn nhập được xử lý ngay trên trình duyệt để tạo tệp Word, không gửi về Google Sheets và không lưu thành danh sách. Chỉ có tòa nhà được chọn và thời điểm nhấn tải được gửi để thống kê tổng lượt tải theo tòa. CCCD và số điện thoại là tùy chọn; nếu bỏ trống, đơn sẽ để dòng chấm để bạn tự điền sau khi in.
@@ -184,9 +184,9 @@ function updateAppendixInfo() {
   if (!tower) {
     $("appendixInfo").textContent = "Chưa chọn tòa nhà. Tài liệu phản biện Tháp B chỉ được đính kèm khi chọn một trong bốn tòa B.";
   } else if (towerB.has(tower)) {
-    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ giữ đoạn đề cập tài liệu kèm theo và đính kèm đầy đủ phần phản biện phương án có thể phá dỡ Tháp B.";
+    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ giữ đoạn đề cập tài liệu kèm theo và đính kèm đầy đủ phần phản biện phương án có thể phá dỡ Tháp B ở cuối đơn.";
   } else {
-    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ tự bỏ đoạn đề cập tài liệu phản biện Tháp B và không đính kèm 3 trang phản biện.";
+    $("appendixInfo").textContent = "Bạn đã chọn " + tower + ": tệp Word sẽ không đề cập tài liệu phản biện Tháp B và không đính kèm 3 trang phản biện cuối văn bản.";
   }
 }
 function updateRecipientCount() {
